@@ -1,0 +1,86 @@
+apply plugin: 'eclipse'
+apply plugin: 'java'
+apply plugin: 'java-library'
+apply plugin: 'idea'
+
+group 'com.github.adrninistrator'
+version = "0.0.1"
+def projectName = "java-text-to-excel"
+description = "${projectName}"
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+def defaultEncoding = 'UTF-8'
+
+[compileJava, compileTestJava]*.options*.encoding = defaultEncoding
+
+project.buildDir = 'build'
+
+repositories {
+    mavenCentral()
+}
+
+clean {
+    delete "${buildDir}"
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+
+        resources {
+            srcDir 'src/main/resources'
+        }
+    }
+
+    test {
+        java {
+            srcDir 'src/test/java'
+        }
+
+        resources {
+            srcDir 'src/test/resources'
+        }
+    }
+}
+
+List fastexcel = ['cn.idev.excel:fastexcel:1.2.0']
+
+
+List junit = [
+        'org.junit.platform:junit-platform-launcher:1.9.3',
+        'org.junit.jupiter:junit-jupiter-engine:5.9.3',
+        'org.junit.vintage:junit-vintage-engine:5.9.3'
+]
+
+dependencies {
+    api fastexcel
+    testImplementation junit
+}
+
+compileJava.options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+
+processResources {
+    setDuplicatesStrategy(DuplicatesStrategy.INCLUDE)
+}
+
+processTestResources {
+    setDuplicatesStrategy(DuplicatesStrategy.INCLUDE)
+}
+
+tasks.register('createProject') {
+    doFirst {
+        sourceSets*.java.srcDirs*.each { it.mkdirs() }
+        sourceSets*.resources.srcDirs*.each { it.mkdirs() }
+    }
+}
+
+idea {
+    module {
+        // and some extra dirs that should be excluded by IDEA
+        excludeDirs += file('.idea')
+        excludeDirs += file('gradle')
+    }
+}

@@ -1,0 +1,12 @@
+build/
+bin/
+out/
+.project
+.settings/
+.idea/
+.gradle/
+*.iml
+.classpath
+*.xlsx
+src/test/resources/localtextfile
+#test/java/test/runlocal
