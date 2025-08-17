@@ -36,7 +36,7 @@ public class TextToExcelEntry {
     // 生成的excel文件路径
     private String outputExcelPath;
 
-    // 文本文件用于分割列的字符
+    // 文本文件用于分隔列的字符
     private String splitChar = "\t";
 
     // 首行字体大小
@@ -54,17 +54,19 @@ public class TextToExcelEntry {
     }
 
     public boolean convertTextToExcel() {
-        int columnNum = -1;
+        int headerColumnNum = -1;
+        int lineNum = 0;
         // 1. 读取文本文件并解析数据
         List<String[]> allData = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(inputFilePath))) {
             String line;
             while ((line = br.readLine()) != null) {
+                lineNum++;
                 String[] data = StringUtils.splitPreserveAllTokens(line, splitChar);
-                if (columnNum == -1) {
-                    columnNum = data.length;
-                } else if (columnNum != data.length) {
-
+                if (headerColumnNum == -1) {
+                    headerColumnNum = data.length;
+                } else if (headerColumnNum != data.length) {
+                    logger.error("{} 第 {} 行文件内容 [{}] 分隔后的列数 {} 与首行的列数 {} 不同", inputFilePath, lineNum, line, data.length, headerColumnNum);
                     return false;
                 }
                 allData.add(data);
