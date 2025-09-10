@@ -20,7 +20,7 @@ public class TestTextToExcel {
 
     @Test
     public void testFontSize() {
-        TextToExcelEntry textToExcelEntry = new TextToExcelEntry(TEXT_FILE_PATH, 1440);
+        TextToExcelEntry textToExcelEntry = new TextToExcelEntry(TEXT_FILE_PATH, 1440, true);
         textToExcelEntry.setHeaderFontSize(20);
         textToExcelEntry.setContentFontSize(16);
         textToExcelEntry.convertTextToExcel();

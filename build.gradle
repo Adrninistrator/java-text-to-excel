@@ -4,7 +4,7 @@ apply plugin: 'java-library'
 apply plugin: 'idea'
 
 group 'com.github.adrninistrator'
-version = "0.0.2"
+version = "0.0.3"
 def projectName = "java-text-to-excel"
 description = "${projectName}"
 sourceCompatibility = 1.8

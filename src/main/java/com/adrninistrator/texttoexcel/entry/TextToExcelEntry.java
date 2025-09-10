@@ -33,6 +33,9 @@ public class TextToExcelEntry {
     // 生成的excel文件总宽度像素（近似值，每列宽度受最小与最大值限制）
     private final int totalWidth;
 
+    // 是否在生成的excel文件名末尾拼接时间戳，以避免不允许打开同名excel文件的问题
+    private final boolean appendTimestampInFileName;
+
     // 生成的excel文件路径
     private String outputExcelPath;
 
@@ -49,8 +52,18 @@ public class TextToExcelEntry {
      * @param totalWidth    生成的excel文件总宽度像素（近似值，每列宽度受最小与最大值限制）
      */
     public TextToExcelEntry(String inputFilePath, int totalWidth) {
+        this(inputFilePath, totalWidth, false);
+    }
+
+    /**
+     * @param inputFilePath             需要转换为excel文件的文本文件路径
+     * @param totalWidth                生成的excel文件总宽度像素（近似值，每列宽度受最小与最大值限制）
+     * @param appendTimestampInFileName 是否在生成的excel文件名末尾拼接时间戳，以避免不允许打开同名excel文件的问题
+     */
+    public TextToExcelEntry(String inputFilePath, int totalWidth, boolean appendTimestampInFileName) {
         this.inputFilePath = inputFilePath;
         this.totalWidth = totalWidth;
+        this.appendTimestampInFileName = appendTimestampInFileName;
     }
 
     public boolean convertTextToExcel() {
@@ -137,6 +150,8 @@ public class TextToExcelEntry {
         String outputFilePath;
         if (StringUtils.isNotBlank(outputExcelPath)) {
             outputFilePath = outputExcelPath;
+        } else if (appendTimestampInFileName) {
+            outputFilePath = inputFilePath + "_" + System.currentTimeMillis() + ".xlsx";
         } else {
             outputFilePath = inputFilePath + ".xlsx";
         }
